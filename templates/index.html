@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pygame Web - Moving Square</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #222;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            text-align: center;
+        }
+        
+        h1 {
+            color: #fff;
+            margin-bottom: 20px;
+        }
+        
+        canvas {
+            border: 3px solid #fff;
+            background-color: white;
+            display: block;
+            margin: 0 auto;
+        }
+        
+        .info {
+            color: #aaa;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pygame Web Edition</h1>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div class="info">
+            <p>Use Arrow Keys or WASD to move the blue square</p>
+            <p>Running on Codespaces with pygame-ce backend</p>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        const SCREEN_WIDTH = 800;
+        const SCREEN_HEIGHT = 600;
+        const FPS = 60;
+        
+        // Colors
+        const WHITE = '#FFFFFF';
+        const BLACK = '#000000';
+        const BLUE = '#0000FF';
+        
+        let keysPressed = {};
+        
+        // Track key presses
+        window.addEventListener('keydown', (e) => {
+            keysPressed[e.code] = true;
+        });
+        
+        window.addEventListener('keyup', (e) => {
+            keysPressed[e.code] = false;
+        });
+        
+        async function updateGame() {
+            try {
+                const response = await fetch('/api/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ keys: keysPressed })
+                });
+                
+                const data = await response.json();
+                
+                // Clear canvas
+                ctx.fillStyle = WHITE;
+                ctx.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+                
+                // Draw player square
+                ctx.fillStyle = BLUE;
+                ctx.fillRect(data.player_x, data.player_y, data.player_size, data.player_size);
+                
+                // Draw instructions
+                ctx.fillStyle = BLACK;
+                ctx.font = '36px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Use Arrow Keys or WASD to move', SCREEN_WIDTH / 2, 40);
+            } catch (error) {
+                console.error('Error updating game:', error);
+            }
+        }
+        
+        // Game loop
+        setInterval(updateGame, 1000 / FPS);
+    </script>
+</body>
+</html>
