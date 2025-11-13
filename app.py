@@ -6,7 +6,7 @@ app = Flask(__name__)
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 
-# Colors
+# Colors (defined in client-side JavaScript)
 
 # Player properties
 player_size = 50
@@ -22,6 +22,10 @@ def index():
 def update_game():
     """Handle game state updates from client"""
     global player_x, player_y
+    
+    # Validate request has JSON data
+    if not request.json:
+        return jsonify({'error': 'Request must contain JSON data'}), 400
     
     data = request.json
     keys = data.get('keys', {})
