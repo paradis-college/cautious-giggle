@@ -1,11 +1,12 @@
 # cautious-giggle
 
-A simple Pygame demonstration project featuring a movable square.
+A Flask web application featuring an interactive movable square game rendered in HTML5 Canvas.
 
 ## Requirements
 
 - Python 3.7 or higher
-- Pygame 2.5.2
+- Flask 3.0.0
+- pygame-ce 2.5.6 (used as backend library)
 
 ## Installation
 
@@ -20,21 +21,27 @@ cd cautious-giggle
 pip install -r requirements.txt
 ```
 
-## Running the Game
+## Running the Application
 
-Run the game with:
+Run the Flask application with:
 ```bash
-python game.py
+python app.py
 ```
+
+Then open your web browser and navigate to `http://localhost:5000`
 
 ## How to Play
 
 - Use **Arrow Keys** or **WASD** to move the blue square
-- Press the **X** button or close the window to exit
+- The game runs in your web browser using HTML5 Canvas
+- Close the browser tab to exit
 
 ## Features
 
-- Simple pygame window setup
-- Keyboard input handling
+- Flask web server backend
+- HTML5 Canvas-based rendering
+- Real-time keyboard input handling via JavaScript
+- Client-server game state synchronization
 - Smooth 60 FPS gameplay
 - Player movement with boundary checking
+- Input validation for API requests
